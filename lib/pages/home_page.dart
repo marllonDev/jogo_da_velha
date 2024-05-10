@@ -1,6 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:jogo_da_velha/widgets/tray_game.dart';
+import 'package:jogo_da_velha/widgets/type_house.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TrayGame trayGame = TrayGame();
+
+  //cores
   final Color black = Colors.black12;
   final Color white = Colors.white70;
   final Color? grey = Colors.grey[800];
@@ -22,7 +27,8 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Jogo da Velha',
+            //titulo
+            'JOGO DA VELHA',
             style: TextStyle(color: white),
           ),
           backgroundColor: black,
@@ -30,6 +36,7 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           children: [
             GridView.builder(
+              // tabuleiro
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -37,12 +44,19 @@ class _HomePageState extends State<HomePage> {
               itemCount: 9,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (trayGame.cardHouse[index] == TypeHouse.empty) {
+                    setState(() {
+                      trayGame.markHouse(index);
+                      trayGame.passTurn();
+                    });
+                    }
+                  },
                   child: Card(
                     color: grey,
                     child: Center(
                       child: Text(
-                        'X',
+                        trayGame.cardHouse[index].name,
                         style: TextStyle(color: white),
                       ),
                     ),
