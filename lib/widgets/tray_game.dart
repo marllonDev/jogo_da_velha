@@ -3,6 +3,7 @@ import 'package:jogo_da_velha/widgets/type_house.dart';
 class TrayGame {
   var cardHouse = List<TypeHouse>.filled(9, TypeHouse.empty);
   var currentTurn = TypeHouse.X;
+  String winColor = '';
 
   //marcar a cardHouse
   void markHouse(int index) {
@@ -15,12 +16,31 @@ class TrayGame {
   }
 
   //verificar se o jogador ganhou
-  bool checkWin() {
-    for (int i = 0; i < 9; i++) {
-      if (cardHouse[i] == TypeHouse.empty) {
-        return false;
+  bool get checkWin {
+    List<String> winHouses = [
+      '012',
+      '345',
+      '678',
+      '036',
+      '147',
+      '258',
+      '048',
+      '246'
+    ];
+
+    for (var winElement in winHouses) {//ler por elemento
+      var char1 = int.parse(winElement[0]);
+      var char2 = int.parse(winElement[1]);
+      var char3 = int.parse(winElement[2]);
+
+      //ler por caractere
+      if (cardHouse[char1] == cardHouse[char2] &&
+          cardHouse[char3] == cardHouse[char2] &&
+          cardHouse[char2] == currentTurn) {
+        winColor = winElement;
+        return true;
       }
     }
-    return true;
+    return false;
   }
 }
