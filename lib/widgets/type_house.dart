@@ -1,4 +1,4 @@
-enum TypeHouse{
+enum TypeHouse {
   X,
   O,
   empty,

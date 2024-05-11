@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TrayGame trayGame = TrayGame();
+  bool winner = false;
+  bool gameOver = false;
 
   //cores
   final Color black = Colors.black;
@@ -39,19 +41,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  bool winner = false;
-  bool gameOver = false;
-
   @override
   Widget build(BuildContext context) {
     //media query
     final height = MediaQuery.sizeOf(context).height * 0.1;
     final width = MediaQuery.sizeOf(context).width * 0.8;
 
+    //verifica se há ganhador
     if (trayGame.checkWin) {
       winner = true;
     }
 
+    //verifica se o jogo acabou
     if (!trayGame.cardHouse.contains(TypeHouse.empty) && winner != true) {
       gameOver = true;
     }
@@ -73,7 +74,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: black,
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment
+              .spaceEvenly, //espaçamento entre os widgets nesta coluna
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -81,26 +83,36 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'Jogador 1 \nX',
                   style: TextStyle(
-                      color: white, fontSize: 30, fontWeight: FontWeight.bold),
+                    color: white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'Jogador 2 \nO',
                   style: TextStyle(
-                      color: white, fontSize: 30, fontWeight: FontWeight.bold),
+                    color: white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
             ),
             Align(
+              //mostra a vez do jogador
               child: Text(
                 'Agora é a vez do ${trayGame.currentTurn == TypeHouse.O ? 'X' : 'O'}',
                 style: TextStyle(
-                    color: white, fontSize: 30, fontWeight: FontWeight.bold),
+                  color: white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             GridView.builder(
-              // tabuleiro
+              //tabuleiro
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -108,12 +120,14 @@ class _HomePageState extends State<HomePage> {
               itemCount: 9,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
+                  //OnTap para definir o que acontecerá quando clicar
                   onTap: () {
-                    //OnTap para definir o que acontecera quando clicar
                     if (winner) {
+                      //se tiver ganhador, então ele para de receber valores
                       return;
                     }
                     if (trayGame.cardHouse[index] == TypeHouse.empty) {
+                      //verifica se está "empty", caso estiver passa o turno e marca a casa
                       setState(() {
                         trayGame.passTurn();
                         trayGame.markHouse(index);
@@ -124,11 +138,14 @@ class _HomePageState extends State<HomePage> {
                     color: trayGame.winColor.contains(index.toString()) &&
                             winner == true
                         ? green
-                        : grey,
+                        : grey, //operador ternário para definir cor do ganhador
                     child: Center(
                       child: Text(
                         firstLoad(index),
-                        style: TextStyle(color: white, fontSize: 50),
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 50,
+                        ),
                       ),
                     ),
                   ),
@@ -136,30 +153,37 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             const SizedBox(height: 10), //espaçamento
-            if (winner)
+            if (winner) //if para mostrar quem ganhou ou perdeu
               Text(
                 "O ganhador é ${trayGame.currentTurn == TypeHouse.X ? 'X' : 'O'}",
                 style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               )
             else if (gameOver)
               const Text(
                 "Ninguém ganhou!!",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               )
             else
-              const Text('',
-                  style: TextStyle(color: Colors.transparent, fontSize: 30)),
+              const Text(
+                '',
+                style: TextStyle(
+                  color: Colors.transparent,
+                  fontSize: 30,
+                ),
+              ),
             Container(
               //botão para apagar os itens na tela
               color: Colors.transparent,
-              height: height,
-              width: width,
+              height: height, //altura dinâmica
+              width: width, //largura dinâmica
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -171,8 +195,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     label: const Text(
                       'REINICIAR',
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],

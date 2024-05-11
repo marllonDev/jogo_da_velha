@@ -26,14 +26,14 @@ class TrayGame {
       '258',
       '048',
       '246'
-    ];
+    ];//posições possíveis para vencer
 
-    for (var winElement in winHouses) {//ler por elemento
+    for (var winElement in winHouses) {//ler por elemento da lista acima
       var char1 = int.parse(winElement[0]);
       var char2 = int.parse(winElement[1]);
       var char3 = int.parse(winElement[2]);
 
-      //ler por caractere
+      //ler por caractere da lista acima
       if (cardHouse[char1] == cardHouse[char2] &&
           cardHouse[char3] == cardHouse[char2] &&
           cardHouse[char2] == currentTurn) {
